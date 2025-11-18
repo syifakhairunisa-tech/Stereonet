@@ -29,3 +29,32 @@ class StereonetApp:
         tk.Button(ctl, text="Plot Stereonet", command=self.plot_stereonet).pack(side=tk.LEFT, padx=4)
         tk.Button(ctl, text="Plot Rose", command=self.plot_rose).pack(side=tk.LEFT, padx=4)
         tk.Button(ctl, text="Plot Polar Density", command=self.plot_density).pack(side=tk.LEFT, padx=4)
+
+# status
+        self.status = tk.StringVar()
+        self.status.set("Data: 0 pair (strike,dip)")
+        tk.Label(root, textvariable=self.status).pack(side=tk.TOP, anchor="w", padx=6)
+
+        # Area plot
+        self.fig = None
+        self.canvas = None
+        self.plot_frame = tk.Frame(root)
+        self.plot_frame.pack(fill=tk.BOTH, expand=True)
+
+    def update_status(self):
+        self.status.set(f"Data: {len(self.data)} pair (strike,dip)")
+
+    def input_manual(self):
+        # Dialog sederhana untuk input satu pair
+        try:
+            s = simpledialog.askfloat("Input Strike", "Strike (0-360):", minvalue=0.0, maxvalue=360.0)
+            if s is None:
+                return
+            d = simpledialog.askfloat("Input Dip", "Dip (0-90):", minvalue=0.0, maxvalue=90.0)
+            if d is None:
+                return
+            s2, d2 = backend.validate_strike_dip_pair(s, d)
+            self.data.append((s2, d2))
+            self.update_status()
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
