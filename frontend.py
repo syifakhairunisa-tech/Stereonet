@@ -58,3 +58,35 @@ class StereonetApp:
             self.update_status()
         except Exception as e:
             messagebox.showerror("Error", str(e))
+
+    def load_csv(self):
+        path = filedialog.askopenfilename(filetypes=[("CSV files",".csv"),("All files",".*")])
+        if not path:
+            return
+        try:
+            data = backend.read_csv_file(path)
+            # tambahkan ke data yang sudah ada
+            self.data.extend(data)
+            self.update_status()
+            messagebox.showinfo("Success", f"Berhasil memuat {len(data)} pasangan dari {path}")
+        except Exception as e:
+            messagebox.showerror("Error membaca CSV", str(e))
+
+    def clear_data(self):
+        self.data = []
+        self.update_status()
+        self.clear_plot()
+
+    def clear_plot(self):
+        if self.canvas:
+            self.canvas.get_tk_widget().destroy()
+            self.canvas = None
+            self.fig = None
+
+    def embed_figure(self, fig):
+        self.clear_plot()
+        self.fig = fig
+        self.canvas = FigureCanvasTkAgg(fig, master=self.plot_frame)
+        self.canvas.draw()
+        widget = self.canvas.get_tk_widget()
+        widget.pack(fill=tk.BOTH, expand=True)
