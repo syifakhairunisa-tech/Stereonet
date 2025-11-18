@@ -90,3 +90,31 @@ class StereonetApp:
         self.canvas.draw()
         widget = self.canvas.get_tk_widget()
         widget.pack(fill=tk.BOTH, expand=True)
+# Handlers untuk plot
+    def plot_stereonet(self):
+        if not self.data:
+            messagebox.showwarning("No data", "Belum ada data. Tambah lewat Input Manual atau Load CSV.")
+            return
+        fig = backend.plot_stereonet(self.data, title="Stereonet Plot (from GUI)")
+        self.embed_figure(fig)
+
+    def plot_rose(self):
+        if not self.data:
+            messagebox.showwarning("No data", "Belum ada data. Tambah lewat Input Manual atau Load CSV.")
+            return
+        fig = backend.plot_rose(self.data, bin_width=10, title="Rose Diagram (from GUI)")
+        self.embed_figure(fig)
+
+    def plot_density(self):
+        if not self.data:
+            messagebox.showwarning("No data", "Belum ada data. Tambah lewat Input Manual atau Load CSV.")
+            return
+        fig = backend.plot_polar_density(self.data, title="Polar Density Contour (from GUI)")
+        self.embed_figure(fig)
+
+
+if name == "main":
+    root = tk.Tk()
+    app = StereonetApp(root)
+    root.geometry("800x700")
+    root.mainloop()
