@@ -16,6 +16,7 @@ import math
 import csv
 import io
 
+# Optional: pandas makes reading CSV file lebih nyaman.
 try:
     import pandas as pd
     _HAS_PANDAS = True
@@ -214,7 +215,7 @@ def example_dataset() -> SData:
     ]
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     # Demo singkat bila dijalankan langsung
     data = example_dataset()
     print("Contoh dataset:", data)
@@ -225,4 +226,4 @@ if _name_ == "_main_":
     fig2 = plot_rose(data)
     fig2.show()
     fig3 = plot_polar_density(data)
-    fig3.show()
+    fig3.show()
